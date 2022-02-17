@@ -1,8 +1,9 @@
+import random
 board = []
 
 
 def print_board():
-    print('-----------')
+    print('-------------')
     for i in range(3):
         for j in range(3):
             if board[i][j] == 'X':
@@ -10,9 +11,9 @@ def print_board():
             elif board[i][j] == 'O':
                 print('| O ', end='')
             else:
-                print('|  ', end='')
-        print('|')
-        print('----------')
+                print('|   ', end='')
+        print('|   ')
+        print('-------------')
 
 
 def check_winner(player):
@@ -35,6 +36,25 @@ def check_winner(player):
         won = True
 
     return won
+
+
+def computer_move():
+    while True:
+        i = random.randint(0, 2)
+        j = random.randint(0, 2)
+        if board[i][j] == '':
+            break
+    board[i][j] = 'O'
+
+
+def board_check_full():
+    board_full = True
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == '':
+                board_full = False
+                break
+    return board_full
 
 
 for i in range(3):
@@ -66,5 +86,19 @@ while game_continue:
                 print('\U0001F389 \U0001F38A \U0001F388 \U0001F389 \U0001F38A \U0001F388')
                 print('You won Congratulation')
                 game_continue = False
+
+        board_full = board_check_full()
+        if board_full and not player_won:
+            print('it\'s tie!')
+            game_continue = False
+
+        if game_continue:
+            computer_move()
+            print_board()
+            computer_won = check_winner(False)
+            if computer_won:
+                print('Computer won the game')
+                game_continue = False
     except:
         print("Invalid input, try again")
+
